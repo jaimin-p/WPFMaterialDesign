@@ -1,0 +1,111 @@
+﻿<Window x:Class="WPFMaterialTemplate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFMaterialTemplate"
+        xmlns:base="clr-namespace:WPFMaterialTemplate.ViewModel.Base"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:vm="clr-namespace:WPFMaterialTemplate.ViewModel"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        mc:Ignorable="d"
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+        Title="MainWindow">
+
+    <i:Interaction.Triggers>
+     
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding SetInitialViewCommand}"/>
+        </i:EventTrigger>
+
+    </i:Interaction.Triggers>
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+
+
+     
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel MinWidth="100" >
+                    <materialDesign:PackIcon Kind="AccountCircle" HorizontalAlignment="Center" DockPanel.Dock="Top" MinWidth="100" Margin="20,20,20,0" Height="50" Width="50"/>
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding CurrentUser}" DockPanel.Dock="Top"  />
+                    
+
+                    <!--<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                    DockPanel.Dock="Top" FontSize="5"
+                                    HorizontalAlignment="Right" Margin="16"
+                                    IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" Width="25" Height="25" />-->
+                    
+                    
+                    <ListBox Name="ViewTabItemsListBox" Margin="0 20 0 20" SelectedIndex="0" 
+                             ItemsSource="{Binding ViewTabs}" HorizontalAlignment="Center" FontSize="14"
+                             SelectedItem="{Binding SelectedTab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                <cmd:EventToCommand Command="{Binding OnPreviewMouseLeftButtonUp}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="base:ViewModelTabItem">
+                                <DockPanel>
+                                    <fa:FontAwesome Icon="{Binding Icon}" FontSize="15" VerticalAlignment="Center" Margin="20 0 0 0"/>
+                                    <TextBlock Text="{Binding Header}" Margin="32 0 32 0" />
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <!--<TextBlock Margin="4"  HorizontalAlignment="Center"  Text="LEFT FIELD"/>--> 
+                    <!--<Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" CommandParameter="{x:Static Dock.Left}" Margin="4" HorizontalAlignment="Center" 
+                            Style="{DynamicResource MaterialDesignFlatButton}" Content="CLOSE THIS"/>-->
+                    <!--<Button Command="{Binding }" CommandParameter="{Binding}" Margin="4" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignFlatButton}" Content="Home"/>-->
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+            <materialDesign:ColorZone Mode="Standard" Padding="2" CornerRadius="1"  materialDesign:ShadowAssist.ShadowDepth="Depth2" Margin="2" DockPanel.Dock="Top">
+                <DockPanel>
+
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                      IsChecked="{Binding IsToggleChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" x:Name="MenuToggleButton"/>
+
+                        <materialDesign:PopupBox HorizontalAlignment="Right" >
+                          <ListBox>
+                            <ListBoxItem Content="One"/>
+                            <ListBoxItem Content="Two"/>
+                                <Separator/>
+                                <ListBoxItem Content="Three"/>
+                          </ListBox>
+                    </materialDesign:PopupBox>
+                   
+                      
+                </DockPanel>
+            </materialDesign:ColorZone>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--<ContentControl Content="{Binding CurrentViewModel}" />-->
+                    <ContentControl Content="{Binding CurrentViewModel}" />
+                    <materialDesign:Snackbar MessageQueue="{Binding NotificationQueue}" x:Name="MainSnackbar" Grid.Row="1" />
+                </Grid>
+            </DockPanel>
+        </materialDesign:DrawerHost>
+       
+    </materialDesign:DialogHost>
+</Window>

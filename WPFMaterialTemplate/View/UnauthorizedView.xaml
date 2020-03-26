@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="WPFMaterialTemplate.View.UnauthorizedView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFMaterialTemplate.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding Unauthorized, Source={StaticResource Locator}}">
+    <Grid HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+        <StackPanel Orientation="Vertical">
+            <materialDesign:PackIcon Kind="LockAlert" HorizontalAlignment="Center" Height="100" Width="100" Foreground="Red"/>
+            <TextBlock Text="{Binding UnauthorizedMessage}"
+                       Margin="10" HorizontalAlignment="Center"
+                       FontSize="25"
+                       Foreground="Red"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
